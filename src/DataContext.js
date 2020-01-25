@@ -11,6 +11,15 @@ const DataContext = React.createContext({
   changeNoteId:  () => {
     
   },
+  deleteNote: () => {
+    
+  },
+  requestFolders: () => {
+    
+  },
+  requestNotes: () => {
+    
+  }
 })
 
 export default DataContext

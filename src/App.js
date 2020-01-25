@@ -5,22 +5,27 @@ import FolderLists from './FolderLists/FolderLists';
 import NoteLists from './NotesLists/NotesLists';
 import dummyStore from './dummy-store';
 import DataContext from './DataContext';
-
+import config from './config';
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      notes: dummyStore.notes,
-      folders: dummyStore.folders,
+      notes: [],
+      folders: [],
       folderId: '',
       noteId: '',
       changeFolderId: this.changeFolderId,
       changeNoteId: this.changeNoteId,
+      deleteNote: this.deleteNote,
+      requestFolders: this.requestFolders,
+      requestNotes: this.requestNotes,
     }
 
   }
+
+
 
   changeFolderId = (id) => {
     this.setState({
@@ -32,6 +37,52 @@ class App extends Component {
     this.setState({
       noteId: id,
     })
+  }
+
+  requestFolders = () => {
+  
+    fetch(config.API_ENDPOINT_FOLDER, {
+      method: 'GET',
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.status)
+        }
+        return res.json()
+      })
+      .then(data => {
+        this.setState({
+          folders: data
+        })
+      })
+      .catch(error => this.setState({ error }))
+
+  }
+
+  requestNotes = () => {
+    
+    fetch(config.API_ENDPOINT_NOTES, {
+      method: 'GET',
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.status)
+        }
+        return res.json()
+      })
+      .then(data => {
+        this.setState({
+          notes: data
+        })
+      })
+      .catch(error => this.setState({ error }))
+  }
+
+
+  deleteNote = (newNotes) =>{
+    this.state({
+        notes: newNotes,
+      })
   }
 
   renderMain() {
@@ -47,6 +98,11 @@ class App extends Component {
             ))}
         </>
     );
+}
+
+componentDidMount() {
+    this.requestFolders();
+    this.requestNotes();
 }
 
   render() {

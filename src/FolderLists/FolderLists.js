@@ -6,7 +6,8 @@ import { withRouter } from 'react-router-dom';
 class FolderLists extends Component {
 
     render() {
-      
+        const link = `/folder/${this.context.folderId}`;
+
         const folders = ['/', '/folder/:folderId'].map(path => {
             return (
                 <Route
@@ -23,7 +24,7 @@ class FolderLists extends Component {
                     path="/note"
                   >
                      <button
-                      onClick={() => this.props.history.goBack()}
+                      onClick={() => this.props.history.push(link)}
                        >
                          Go Back
                      </button>
