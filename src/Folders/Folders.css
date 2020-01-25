@@ -1,0 +1,24 @@
+.folders{
+    margin-left: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    padding-left: auto;
+    padding-right: auto;
+}
+  
+.folder{
+    border: 1px solid black;
+    height: 70px;
+    font-size: 20px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.folders > button{
+    margin-top: 20px;
+    width: 80%;
+    height: 50px;
+}
