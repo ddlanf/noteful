@@ -34,7 +34,7 @@ class AddNote extends Component {
                 name: name,
                 modified: new Date(),
                 folderId: this.context.folderId,
-                content: content,
+                content: (content || "**Content Empty"),
             })
           })
             .then(res => {
@@ -67,8 +67,20 @@ class AddNote extends Component {
         this.setState({ name: { value: name, touched: true } });
     }
 
+    validateName() {
+        const name = this.state.name.value.trim();
+        if (name.length === 0) {
+          return "Name is required";
+        } 
+    }
+
     updateContent(name) {
         this.setState({ content: { value: name, touched: true } });
+    }
+
+    cancel = () =>{
+        this.props.history.push("/")
+        this.setState({ name: { value: "", touched: false } });
     }
 
     handleSubmit = (event) => {
@@ -94,6 +106,7 @@ class AddNote extends Component {
                                 id="name"
                                 onChange={e => this.updateName(e.target.value)}
                                 />
+                            {!this.state.name.touched? (<></>): (<h2 style={{color:'red', fontSize: '20px'}}>{this.validateName()}</h2>)}
                             <label className="content-label">Content:</label>
                             <input 
                                 type="text" 
@@ -103,11 +116,13 @@ class AddNote extends Component {
                                 onChange={e => this.updateContent(e.target.value)}
                             />
                         </div>
-                        <button type="submit" className="button-submit">
+                        <button type="submit" className="button-submit"
+                             disabled={this.validateName()}
+                            >
                             Add
                         </button>
                         <button className="button-submit" 
-                            onClick={() => this.props.history.push("/")}
+                             onClick={() => this.cancel()}
                             >
                             Cancel
                         </button>

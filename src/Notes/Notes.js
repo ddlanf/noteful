@@ -4,6 +4,7 @@ import DataContext from '../DataContext';
 import {Link, Route} from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import config from '../config';
+import CheckNoteError from '../CheckNoteError'
 
 class Notes extends Component {
     static contextType = DataContext;
@@ -32,7 +33,6 @@ class Notes extends Component {
     }
 
     render() {
-        console.log(this.props.history)
         const notes = this.context.notes
             .filter(note => { 
                     if(!this.context.noteId || !this.props.location.pathname.includes('/note')){ 
@@ -43,32 +43,34 @@ class Notes extends Component {
                 .map((note, index) =>{
                         return(
                             <>
-                                <li className="Note"
-                                    key={index}
-                                    id={note.id}
-                                    folderid={note.folderId}
-                                    >
-                                    <Link to={`/note/${note.id}`}
-                                        onClick={() => this.context.changeNoteId(note.id)}
-                                        >
-                                        <h1>{note.name}</h1>
-                                    </Link>
-                                    <div className="bottom">
-                                        <p>Date Modified:  {note.modified}</p>
-                                        <button
-                                            onClick={() => this.requestDelete(note.id)}
+                                <CheckNoteError>
+                                        <li className="Note"
+                                            key={index}
+                                            id={note.id}
+                                            folderid={note.folderId}
                                             >
-                                            Delete Note
-                                        </button>
-                                    </div>
-                                </li>  
-                                <Route
-                                    path='/note/:noteId'
-                                    >
-                                    <p className="content">
-                                        {note.content}                    
-                                    </p>
-                                </Route>
+                                            <Link to={`/note/${note.id}`}
+                                                onClick={() => this.context.changeNoteId(note.id)}
+                                                >
+                                                <h1>{note.name}</h1>
+                                            </Link>
+                                            <div className="bottom">
+                                                <p>Date Modified:  {note.modified}</p>
+                                                <button
+                                                    onClick={() => this.requestDelete(note.id)}
+                                                    >
+                                                    Delete Note
+                                                </button>
+                                            </div>
+                                        </li>  
+                                    <Route
+                                        path='/note/:noteId'
+                                        >
+                                        <p className="content">
+                                            {note.content}                    
+                                        </p>
+                                    </Route>
+                                </CheckNoteError>
                             </>   
                         );  
                  });

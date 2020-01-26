@@ -14,7 +14,7 @@ class AddFolder extends Component {
             this.state = {
             name: {
                 value: "",
-                touched: false
+                touched: false,
             },
         }
     }
@@ -46,7 +46,7 @@ class AddFolder extends Component {
                 this.props.history.push('/');
             })
             .then(
-                this.context.requestNotes()
+                this.context.requestNotes(),
             )
             .catch(error => this.setState({ error }))
     }
@@ -64,10 +64,21 @@ class AddFolder extends Component {
         this.setState({ name: { value: name, touched: true } });
     }
 
+    validateName() {
+        const name = this.state.name.value.trim();
+        if (name.length === 0) {
+          return "Name is required";
+        } 
+     }
+    
+    cancel = () =>{
+        this.props.history.push("/")
+        this.setState({ name: { value: "", touched: false } });
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         const { name } = this.state;
-       
         this.requestPost(name.value);
     }
 
@@ -88,11 +99,14 @@ class AddFolder extends Component {
                             onChange={e => this.updateName(e.target.value)}
                     />
                     </div>
-                    <button type="submit" className="button-submit">
+                    {!this.state.name.touched? (<></>): (<h2 style={{color:'red', fontSize: '20px'}}>{this.validateName()}</h2>)}
+                    <button type="submit" className="button-submit"
+                             disabled={this.validateName()}
+                        >
                         Add
                     </button>
                     <button className="button-submit" 
-                        onClick={() => this.props.history.push("/")}
+                        onClick={() => this.cancel()}
                         >
                         Cancel
                     </button>

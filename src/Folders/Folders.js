@@ -3,6 +3,7 @@ import './Folders.css'
 import DataContext from '../DataContext'
 import {Link} from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+import CheckFolderError from '../CheckFolderError'
 
 class Folders extends Component {
 
@@ -16,13 +17,15 @@ class Folders extends Component {
                 <Link to={`/folder/${folder.id}`}
                     onClick={() => this.context.changeFolderId(folder.id)}
                     >
-                    <li className="folder"
-                        key={index}
-                        id={folder.id}
-                        style={{'background-color': selected}}
-                        >
-                            {folder.name}
-                    </li>  
+                    <CheckFolderError>
+                        <li className="folder"
+                            key={index}
+                            id={folder.id}
+                            style={{'background-color': selected}}
+                            >
+                                {folder.name}
+                        </li>  
+                    </CheckFolderError>
                 </Link>
             );  
         });
