@@ -3,9 +3,10 @@ import './App.css';
 import {Route, Link} from 'react-router-dom';
 import FolderLists from './FolderLists/FolderLists';
 import NoteLists from './NotesLists/NotesLists';
-import dummyStore from './dummy-store';
 import DataContext from './DataContext';
 import config from './config';
+import AddFolder from './AddFolder/AddFolder';
+import AddNote from './AddNote/AddNote';
 
 class App extends Component {
   constructor(props) {
@@ -21,11 +22,16 @@ class App extends Component {
       deleteNote: this.deleteNote,
       requestFolders: this.requestFolders,
       requestNotes: this.requestNotes,
+      appendFolder: this.appendFolder,
     }
 
   }
 
-
+  appendFolder = (newfolder) =>{
+    this.setState({
+      folders: [...this.state.folders, newfolder],
+    })
+  }
 
   changeFolderId = (id) => {
     this.setState({
@@ -113,12 +119,17 @@ componentDidMount() {
       <main>
        <DataContext.Provider value={contextValue}>
           <header>
-            <Link to="/">Noteful</Link>{' '}
+            <Link to="/"
+              onClick={() => this.changeFolderId('')}
+              >Noteful
+            </Link>{' '}
           </header>
           <div className="data-container"> 
             {this.renderMain()}
             <NoteLists/>
           </div>
+          <AddFolder/>
+          <AddNote/>
        </DataContext.Provider>
       </main>
     )

@@ -32,7 +32,7 @@ class Notes extends Component {
     }
 
     render() {
-        console.log(this.context)
+        console.log(this.props.history)
         const notes = this.context.notes
             .filter(note => { 
                     if(!this.context.noteId || !this.props.location.pathname.includes('/note')){ 
@@ -79,7 +79,11 @@ class Notes extends Component {
                     exact path={path}
                     key={path}
                 >
-                     <button>Add Note</button>
+                     <button
+                        onClick={() => this.props.history.push("/addnote")}
+                        >
+                        Add Note
+                    </button>
                 </Route>
             )
         })

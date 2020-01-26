@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './Folders.css'
 import DataContext from '../DataContext'
 import {Link} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class Folders extends Component {
 
@@ -29,7 +30,9 @@ class Folders extends Component {
         return (  
          <ul className="folders">
             {folders}
-            <button>
+            <button
+                onClick={() => this.props.history.push("/addfolder")}
+                >
                     Add Folder
             </button>
          </ul>
@@ -37,4 +40,4 @@ class Folders extends Component {
     }
 }
 
-export default Folders
+export default withRouter(Folders);

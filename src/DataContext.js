@@ -19,6 +19,9 @@ const DataContext = React.createContext({
   },
   requestNotes: () => {
     
+  },
+  appendFolder: () => {
+    
   }
 })
 
