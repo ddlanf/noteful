@@ -43,11 +43,9 @@ class AddFolder extends Component {
                 this.context.appendFolder(data);
                 this.context.changeFolderId('')
                 this.context.changeNoteId('')
+                this.cancel();
                 this.props.history.push('/');
             })
-            .then(
-                this.context.requestNotes(),
-            )
             .catch(error => this.setState({ error }))
     }
 

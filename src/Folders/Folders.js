@@ -16,12 +16,13 @@ class Folders extends Component {
             return(
                 <Link to={`/folder/${folder.id}`}
                     onClick={() => this.context.changeFolderId(folder.id)}
+                    key={index}
                     >
                     <CheckFolderError>
                         <li className="folder"
                             key={index}
                             id={folder.id}
-                            style={{'background-color': selected}}
+                            style={{'backgroundColor': selected}}
                             >
                                 {folder.name}
                         </li>  

@@ -11,6 +11,7 @@ class AddNote extends Component {
 
     constructor(props) {
         super(props);
+       
             this.state = {
             name: {
                 value: "",
@@ -20,22 +21,26 @@ class AddNote extends Component {
                 value: "",
                 touched: false
             },
+            folderId: '',
         }
     }
 
-    requestPost(name, content){
+    requestPost(name, content, folderId){
+      
+        const data = {
+            id: 'd26e' + this.generateRandomString(4, '01234569qwertyuioplkjhgfdsazxcvbnm') + '-ffaf-11e8-8eb2-f2801f1b9fd1',
+            name: name,
+            modified: JSON.stringify(new Date()),
+            folderId: (folderId ||  this.context.folderId),
+            content: (content || "**Content Empty"),
+        };
+        console.log(data.folderId)
         fetch(config.API_ENDPOINT_NOTES, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
               },
-            body: JSON.stringify({
-                id: 'd26e' + this.generateRandomString(4, '01234569qwertyuioplkjhgfdsazxcvbnm') + '-ffaf-11e8-8eb2-f2801f1b9fd1',
-                name: name,
-                modified: new Date(),
-                folderId: this.context.folderId,
-                content: (content || "**Content Empty"),
-            })
+            body: JSON.stringify(data),
           })
             .then(res => {
               if (!res.ok) {
@@ -44,13 +49,12 @@ class AddNote extends Component {
               return res.json()
             })
             .then( () => {
+                this.context.appendNote(data);
                 this.context.changeFolderId('')
                 this.context.changeNoteId('')
                 this.props.history.push('/');
+                this.cancel();
             })
-            .then(
-                this.context.requestNotes()
-            )
             .catch(error => this.setState({ error }))
     }
 
@@ -78,6 +82,11 @@ class AddNote extends Component {
         this.setState({ content: { value: name, touched: true } });
     }
 
+    updateChoice(selected){
+       
+        this.setState({ folderId: selected });
+    }   
+
     cancel = () =>{
         this.props.history.push("/")
         this.setState({ name: { value: "", touched: false } });
@@ -85,12 +94,12 @@ class AddNote extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { name, content } = this.state;
-        this.requestPost(name.value, content.value);
+        const { name, content, folderId } = this.state;
+        this.requestPost(name.value, content.value, folderId);
     }
 
     render() {
-        console.log(this.context.folderId)
+      
         return (
             <Route
                 exact path='/addnote'>
@@ -115,6 +124,22 @@ class AddNote extends Component {
                                 id="content"
                                 onChange={e => this.updateContent(e.target.value)}
                             />
+                            <select 
+                                    className="folderId"
+                                    onChange={e => this.updateChoice(e.target.value)} 
+                            >
+                                {  this.context.folders
+                                        .filter((folder => { return folder.id === this.context.folderId  }))
+                                            .map((folder) =>{
+                                                return  <option key={folder.id} value={`${folder.id}`}>{folder.name}</option>
+                                })}
+                                {
+                                    this.context.folders
+                                        .filter((folder => { return folder.id !== this.context.folderId  }))
+                                            .map((folder, index) =>{
+                                                return  <option key={index} value={`${folder.id}`}>{folder.name}</option>
+                                })}
+                            </select>
                         </div>
                         <button type="submit" className="button-submit"
                              disabled={this.validateName()}

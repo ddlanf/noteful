@@ -27,7 +27,7 @@ class Notes extends Component {
                 if(this.props.location.pathname.includes('/note')){
                     this.props.history.push('/');
                 }
-                this.context.requestNotes();
+                this.context.deleteNote(noteId);
             })
             .catch(error => this.setState({ error }))
     }
@@ -66,7 +66,9 @@ class Notes extends Component {
                                     <Route
                                         path='/note/:noteId'
                                         >
-                                        <p className="content">
+                                        <p 
+                                            key={index}
+                                            className="content">
                                             {note.content}                    
                                         </p>
                                     </Route>
@@ -82,6 +84,7 @@ class Notes extends Component {
                     key={path}
                 >
                      <button
+                        key={path}
                         onClick={() => this.props.history.push("/addnote")}
                         >
                         Add Note

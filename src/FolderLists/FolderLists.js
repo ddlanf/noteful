@@ -12,6 +12,7 @@ class FolderLists extends Component {
         const folders = ['/', '/folder/:folderId'].map(path => {
             return (
                 <Route
+                 key={path}
                  exact path={path}
                  component={Folders}
                 />

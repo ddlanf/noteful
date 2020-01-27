@@ -22,6 +22,9 @@ const DataContext = React.createContext({
   },
   appendFolder: () => {
     
+  },
+  appendNote: () => {
+    
   }
 })
 

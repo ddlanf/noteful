@@ -23,13 +23,20 @@ class App extends Component {
       requestFolders: this.requestFolders,
       requestNotes: this.requestNotes,
       appendFolder: this.appendFolder,
+      appendNote: this.appendNote,
     }
 
   }
 
-  appendFolder = (newfolder) =>{
+  appendFolder = (newFolder) =>{
     this.setState({
-      folders: [...this.state.folders, newfolder],
+      folders: [...this.state.folders, newFolder],
+    })
+  }
+
+  appendNote = (newNote) =>{
+    this.setState({
+      notes: [...this.state.notes, newNote],
     })
   }
 
@@ -85,10 +92,11 @@ class App extends Component {
   }
 
 
-  deleteNote = (newNotes) =>{
-    this.state({
-        notes: newNotes,
-      })
+  deleteNote = (id) =>{
+    const newNotes = this.state.notes.filter((note => { return note.id !== id  }))
+    this.setState({
+      notes: newNotes,
+    })
   }
 
   renderMain() {
