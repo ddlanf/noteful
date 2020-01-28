@@ -113,9 +113,12 @@ class AddNote extends Component {
                                 className="note-name"
                                 name="name" 
                                 id="name"
+                                aria-required="true"
+                                aria-describedby="Name"
+                                aria-label="Name"
                                 onChange={e => this.updateName(e.target.value)}
                                 />
-                            {!this.state.name.touched? (<></>): (<h2 style={{color:'red', fontSize: '20px'}}>{this.validateName()}</h2>)}
+                            {!this.state.name.touched? (<></>): (<h2 id="name" style={{color:'red', fontSize: '20px'}}>{this.validateName()}</h2>)}
                             <label className="content-label">Content:</label>
                             <input 
                                 type="text" 

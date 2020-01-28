@@ -9,7 +9,6 @@ import CheckNoteError from '../CheckNoteError'
 class Notes extends Component {
     static contextType = DataContext;
 
-    
     requestDelete = (noteId) => {
         fetch(config.API_ENDPOINT_NOTES + `/${noteId}`, {
             method: 'DELETE',
@@ -42,7 +41,6 @@ class Notes extends Component {
                 })
                 .map((note, index) =>{
                         return(
-                            <>
                                 <CheckNoteError>
                                         <li className="Note"
                                             key={index}
@@ -66,14 +64,13 @@ class Notes extends Component {
                                     <Route
                                         path='/note/:noteId'
                                         >
-                                        <p 
-                                            key={index}
+                                        <li
+                                            key={index+"content"}
                                             className="content">
                                             {note.content}                    
-                                        </p>
+                                        </li>
                                     </Route>
-                                </CheckNoteError>
-                            </>   
+                                </CheckNoteError> 
                         );  
                  });
 
@@ -94,10 +91,12 @@ class Notes extends Component {
         })
 
         return (
-            <ul className="Notes">
-                {notes}
+            <div className="Notes">
+                <ul>
+                     {notes}
+                </ul>
                 {button}
-            </ul>
+            </div>
         )
     }
 }

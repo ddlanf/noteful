@@ -94,10 +94,13 @@ class AddFolder extends Component {
                             className="folder-name"
                             name="name" 
                             id="name"
+                            aria-required="true"
+                            aria-describedby="Name"
+                            aria-label="Name"
                             onChange={e => this.updateName(e.target.value)}
                     />
                     </div>
-                    {!this.state.name.touched? (<></>): (<h2 style={{color:'red', fontSize: '20px'}}>{this.validateName()}</h2>)}
+                    {!this.state.name.touched? (<></>): (<h2 id="Name" style={{color:'red', fontSize: '20px'}}>{this.validateName()}</h2>)}
                     <button type="submit" className="button-submit"
                              disabled={this.validateName()}
                         >

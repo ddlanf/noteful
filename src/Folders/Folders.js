@@ -34,11 +34,13 @@ class Folders extends Component {
         return (  
          <ul className="folders">
             {folders}
-            <button
-                onClick={() => this.props.history.push("/addfolder")}
-                >
-                    Add Folder
-            </button>
+            <li>
+                <button
+                    onClick={() => this.props.history.push("/addfolder")}
+                    >
+                        Add Folder
+                </button>
+            </li>
          </ul>
         );
     }
