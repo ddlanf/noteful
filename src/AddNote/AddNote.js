@@ -11,7 +11,7 @@ class AddNote extends Component {
 
     constructor(props) {
         super(props);
-       
+
             this.state = {
             name: {
                 value: "",
@@ -22,19 +22,21 @@ class AddNote extends Component {
                 touched: false
             },
             folderId: '',
-        }
+            selection_good: false
+         }
     }
 
     requestPost(name, content, folderId){
-      
+       
         const data = {
-            id: 'd26e' + this.generateRandomString(4, '01234569qwertyuioplkjhgfdsazxcvbnm') + '-ffaf-11e8-8eb2-f2801f1b9fd1',
             name: name,
-            modified: JSON.stringify(new Date()),
-            folderId: (folderId ||  this.context.folderId),
+            date_modified: JSON.stringify(new Date()),
+            folder_id: parseInt((folderId ||  this.context.folderId)),
             content: (content || "**Content Empty"),
         };
-        console.log(data.folderId)
+        this.context.appendNote(data);
+        
+        console.log(folderId)
         fetch(config.API_ENDPOINT_NOTES, {
             method: 'POST',
             headers: {
@@ -49,11 +51,12 @@ class AddNote extends Component {
               return res.json()
             })
             .then( () => {
-                this.context.appendNote(data);
-                this.context.changeFolderId('')
-                this.context.changeNoteId('')
-                this.props.history.push('/');
-                this.cancel();
+              this.context.requestNotes()
+              this.context.changeFolderId('')
+              this.context.changeNoteId('')
+              this.context.appendNote(data);
+              this.props.history.push('/');
+              this.cancel();
             })
             .catch(error => this.setState({ error }))
     }
@@ -78,13 +81,26 @@ class AddNote extends Component {
         } 
     }
 
+    validateSelection = () => {
+        if(this.state.selection_good){
+            return true
+        }
+    }
+
     updateContent(name) {
+        
         this.setState({ content: { value: name, touched: true } });
     }
 
     updateChoice(selected){
-       
-        this.setState({ folderId: selected });
+        let selection = false
+        if(selected === "none"){
+            selection = false 
+        }
+        else{ selection = true }
+
+        this.setState({ folderId: selected, selection_good: selection });
+ 
     }   
 
     cancel = () =>{
@@ -131,26 +147,21 @@ class AddNote extends Component {
                                     className="folderId"
                                     onChange={e => this.updateChoice(e.target.value)} 
                             >
-                                {  this.context.folders
-                                        .filter((folder => { return folder.id === this.context.folderId  }))
-                                            .map((folder) =>{
-                                                return  <option key={folder.id} value={`${folder.id}`}>{folder.name}</option>
-                                })}
+                                <option key="none" value="none" selected>Select your folder</option>
                                 {
                                     this.context.folders
-                                        .filter((folder => { return folder.id !== this.context.folderId  }))
                                             .map((folder, index) =>{
                                                 return  <option key={index} value={`${folder.id}`}>{folder.name}</option>
                                 })}
                             </select>
                         </div>
                         <button type="submit" className="button-submit"
-                             disabled={this.validateName()}
+                             disabled={!this.validateSelection() || this.validateName()}
                             >
                             Add
                         </button>
                         <button className="button-submit" 
-                             onClick={() => this.cancel()}
+                             onClick={() => this.cancel() }
                             >
                             Cancel
                         </button>

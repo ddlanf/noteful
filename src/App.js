@@ -42,13 +42,13 @@ class App extends Component {
 
   changeFolderId = (id) => {
     this.setState({
-      folderId: id,
+      folderId: parseInt(id),
     })
   }
 
   changeNoteId = (id) => {
     this.setState({
-      noteId: id,
+      noteId: parseInt(id),
     })
   }
 

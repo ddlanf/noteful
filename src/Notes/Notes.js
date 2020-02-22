@@ -10,6 +10,7 @@ class Notes extends Component {
     static contextType = DataContext;
 
     requestDelete = (noteId) => {
+        this.context.deleteNote(noteId);
         fetch(config.API_ENDPOINT_NOTES + `/${noteId}`, {
             method: 'DELETE',
             headers: {
@@ -26,7 +27,6 @@ class Notes extends Component {
                 if(this.props.location.pathname.includes('/note')){
                     this.props.history.push('/');
                 }
-                this.context.deleteNote(noteId);
             })
             .catch(error => this.setState({ error }))
     }
@@ -35,7 +35,7 @@ class Notes extends Component {
         const notes = this.context.notes
             .filter(note => { 
                     if(!this.context.noteId || !this.props.location.pathname.includes('/note')){ 
-                        return (note.folderId === this.context.folderId || !this.context.folderId)
+                        return (note.folder_id === this.context.folderId || !this.context.folderId)
                     }
                     else{ return  (note.id === this.context.noteId) }
                 })
@@ -45,17 +45,17 @@ class Notes extends Component {
                                         <li className="Note"
                                             key={index}
                                             id={note.id}
-                                            folderid={note.folderId}
+                                            folderid={note.folder_id}
                                             >
-                                            <Link to={`/note/${note.id}`}
+                                            <Link to={`/note/${JSON.stringify(note.id)}`}
                                                 onClick={() => this.context.changeNoteId(note.id)}
                                                 >
                                                 <h1>{note.name}</h1>
                                             </Link>
                                             <div className="bottom">
-                                                <p>Date Modified:  {note.modified}</p>
+                                                <p>Date Modified:  {note.date_modified}</p>
                                                 <button
-                                                    onClick={() => this.requestDelete(note.id)}
+                                                    onClick={() => this.requestDelete(parseInt(note.id))}
                                                     >
                                                     Delete Note
                                                 </button>

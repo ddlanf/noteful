@@ -22,9 +22,12 @@ class AddFolder extends Component {
     requestPost(name){
        
         const data = {
-            id: 'b071' + this.generateRandomString(5, '01234569qwertyuioplkjhgfdsazxcvbnm') + '-ffaf-11e8-8eb2-f2801f1b9fd1',
             name: name,
         };
+
+        this.context.changeFolderId('')
+        this.context.changeNoteId('')
+        this.context.appendFolder(data);
 
         fetch(config.API_ENDPOINT_FOLDER, {
             method: 'POST',
@@ -40,11 +43,9 @@ class AddFolder extends Component {
               return res.json()
             })
             .then( () => {
-                this.context.appendFolder(data);
-                this.context.changeFolderId('')
-                this.context.changeNoteId('')
                 this.cancel();
                 this.props.history.push('/');
+                this.context.requestFolders();
             })
             .catch(error => this.setState({ error }))
     }
